@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/animate.css" rel="stylesheet">
+		
+	
+		<script type="text/javascript" src="js/Mouse.js"></script>
+        <script type="text/javascript" src="js/Jogo.js"></script>
+		<script type="text/javascript" src="js/Partida.js"></script>
+		<script type="text/javascript" src="js/Motor.js"></script>
+		<script type="text/javascript" src="js/Colisao.js"></script>
+		<script type="text/javascript" src="js/Canhao.js"></script>
+		<script type="text/javascript" src="js/Projetil.js"></script>
+		<script type="text/javascript" src="js/Alvo.js"></script>
+		<script type="text/javascript" src="js/Transicao.js"></script>
+		<script type="text/javascript" src="js/Fase.js"></script>		
+		<script type="text/javascript" src="js/Jogador.js"></script>
+		
+		<script type="text/javascript">
+		
+			var segundos = 0;
+			
+			var minutos = 0;
+
+		
+				
+				setInterval(function(){
+				
+				segundos++;
+					
+					if(segundos == 60){
+						
+						minutos++;
+						segundos = 0;					
+					}
+					
+					 this.document.getElementById("tempo").innerHTML = minutos +"m "+ segundos + "s";
+					
+					
+				},1000);
+			
+			
+
+			
+	
+			function abrirTutorial(){			
+				
+				document.getElementById("formulario").style.display = "none";
+				document.getElementById("play").style.display = "none";
+				document.getElementById("tutorial").style.display = "block";	
+
+				var nickname = document.getElementById("nickName").value;
+				
+				if(document.getElementById("nickName").value){
+				
+					document.getElementById("nomeUsuario").innerHTML = document.getElementById("nickName").value.toUpperCase();
+					
+				}else{
+				
+					document.getElementById("nomeUsuario").innerHTML = "JOGADOR";
+				}
+				
+				
+			}
+		
+			function abrirJogo(){
+			
+				minutos = 0;
+				
+				segundos = 0;
+				
+				document.body.style.backgroundImage = "url('img/capa-home-2des.jpg')";	
+				
+				document.getElementById("tutorial").style.display = "none";
+				document.getElementById("jogar").style.display = "none";				
+				document.getElementById("logo").style.display = "none";
+				document.getElementById("containerPrincipal").style.display = "block";
+				
+				
+				
+				jogo.getPartida().iniciar();
+				
+			}
+		
+						
+		window.onload = function(){
+			
+				jogo.getPartida().getCanhao().setMouse(mouse);
+				
+				areaCanvas.addEventListener('mousemove', function(movimentoMouse){					
+					
+					jogo.getPartida().getCanhao().calcularAnguloDisparo(movimentoMouse);					
+								
+				}, false);				
+				
+				areaCanvas.addEventListener('mousedown', function(mousePressionado){
+				
+					medidorVelocidade();		
+				
+				}, false);				
+				
+				areaCanvas.addEventListener('mouseup', function(mouseSolto){				
+				
+					clearInterval(velocidadeAtual);
+										
+					velocidade = 40;
+					
+					jogo.getPartida().dispararCanhao();										
+				
+				}, false);				
+				
+		
+			var velocidade = 40;
+			
+			function medidorVelocidade(){			
+			
+				velocidadeAtual = setInterval (function(){
+
+					if(velocidade == 102){
+					
+						velocidade = 40;
+					}
+			
+					velocidade += 0.5;
+					
+					jogo.getPartida().getCanhao().setVelocidadeInicialDisparo(velocidade);
+	   
+				}, 10);				
+			}
+
+			
+            
+			
+
+			
+		}		
+		
+		</script>
+        
+    </head>
+    <body>           
+            <audio autoplay loop id="sf">
+                <source src="audio/bg-song.mp3" type="audio/mpeg">
+            </audio>
+		
+            <main>			
+			
+                <img src="img/logo-1.png" alt="" class="logo animated fadeIn" id="logo"> 
+                <div class="formulario" id="formulario" class="formulario animated pulse">
+                    <input type="text" value="" id="nickName" placeholder="NICKNAME" autofocus="autofocus" maxlength="10">
+                </div>
+                <button type="button" class="play animated pulse" id="play" onclick="abrirTutorial()">COMEÇAR</button>
+                           
+                
+				<div class="tutorial" id="tutorial">
+                    <video width="600" height="400" controls>
+                        <source src="img/Tutorial Game.mp4" type="video/mp4">
+                    </video>
+                    <br>
+                    <button class="margin-top-20" id="jogar" onclick="abrirJogo()">JOGAR</button>
+                </div>
+							
+            </main>
+			
+	
+			<div id="containerPrincipal" style="display:none;">
+			
+			<div id="cabecalho">
+			
+			<div id="fases">		
+			
+				<div class="fase">
+					<img src="img/projetilFase1mini.png" width="63" height="80">
+					<p>Fase 1</p>
+				</div>
+				
+				<div class="fase">
+					<img src="img/projetilFase2mini.png" width="77" height="80">
+					<p class="atual">Fase 2</p>
+				</div>
+				
+				<div class="fase">
+					<img src="img/projetilFase3mini.png" width="58" height="80">
+					<p>Fase 3</p>
+				</div>
+				
+				<div class="fase">
+					<img src="img/projetilFase4mini.png" width="57" height="80">
+					<p>Fase 4</p>
+				</div>
+				
+				<div class="fase">
+					<img src="img/projetilFase5mini.png" width="56" height="80">
+					<p>Fase 5</p>
+				</div>
+				
+				<div class="fase">
+					<img src="img/projetilFase6mini.png" width="67" height="80">
+					<p>Fase 6</p>
+				</div>
+		
+			</div>
+			
+						
+			<div class="dados">		
+				<p>Total de lançamentos</p>
+				<h1><div id="quantidadeArremessos">0</div></h1>			
+			</div>
+			
+			<div class="dados">
+				<p>Tempo de jogo<p>		
+				<h1><div id="tempo"></div></h1>
+			</div>
+			
+			
+			<div id="tentativas">	
+				<p>Suas tentativas, <div id="nomeUsuario" style="margin:0;"></div><p>	
+				
+				<div class="tentativa"><img src="img/coracao.jpg" width="40" height="48"></div>
+				<div class="tentativa"><img src="img/coracao.jpg" width="40" height="48"></div>
+				<div class="tentativa"><img src="img/coracao.jpg" width="40" height="48"></div>
+			
+			</div>		
+			
+			
+			
+		</div>
+
+		<div id="animacao" style="margin:0;">
+			<canvas id="areaCanvas" name="areaCanvas" width="1120" height="606" style="box-shadow: 0px 0px 10px rgba(0,0,0,0.8); border:0; margin:0;"></canvas>
+		</div>
+			
+			</div>
+		
+        <script>
+
+			document.getElementById("sf").volume = 0.2;		
+		
+			var areaCanvas = document.getElementById('areaCanvas');
+			
+			var mouse = new Mouse(areaCanvas);
+					
+			var jogo = new Jogo(areaCanvas,document);
+			
+			jogo.iniciar();
+		
+            
+        </script>
+
+      
+    </body>
+</html>
