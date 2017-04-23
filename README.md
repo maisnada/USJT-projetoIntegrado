@@ -2,7 +2,7 @@
 
 Código do projeto integrado 2º Sem - 2016 - CCOMCA1
 
-Proposta: Criação de um jogo com aplicação de lançamento Lançamento Oblíquo.
+Proposta: Criação de um jogo com aplicação de Lançamento Oblíquo.
 
 Participantes: 
 
